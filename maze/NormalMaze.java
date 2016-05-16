@@ -155,7 +155,7 @@ public class NormalMaze extends Maze {
 			}
 		}
 		
-		StdDraw.setCanvasSize(900, 900);
+		StdDraw.setCanvasSize(900,650);
 		StdDraw.setXscale(-1, sizeC+1);
 		StdDraw.setYscale(-1, sizeR+1);
 
