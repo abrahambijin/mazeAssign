@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="SampleSolver">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/mazeSolver/SampleSolver.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
