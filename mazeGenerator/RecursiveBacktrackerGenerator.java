@@ -21,17 +21,23 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
         visited = new boolean[maze.sizeR][maze.sizeC];
         type = maze.type;
 
-        recursiveBackTracker(maze.entrance, false);
+        recursiveBackTracker(maze.entrance);
 
     } // end of generateMaze()
 
-    private void recursiveBackTracker(Cell currentCell, boolean tunneled)
+    /**
+     * Function recursively generates a maze using the DFS approach
+     *
+     * @param currentCell: The cell that is to be processed.
+     */
+    private void recursiveBackTracker(Cell currentCell)
     {
-        visited[currentCell.r][columnValue(currentCell.r, currentCell.c)] =
-                true;
-        if (type == Maze.TUNNEL && !tunneled && currentCell.tunnelTo != null)
+        setVisited(currentCell.r, currentCell.c);
+        if (type == Maze.TUNNEL)
         {
-            recursiveBackTracker(currentCell.tunnelTo, true);
+            Cell nextCell = currentCell.tunnelTo;
+            if (nextCell != null && !isVisited(nextCell.r, nextCell.c))
+                recursiveBackTracker(nextCell);
         }
 
         ArrayList<Integer> directions = getDirections();
@@ -44,47 +50,79 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
 
             Cell nextCell = currentCell.neigh[visitingDirection];
 
-            if (nextCell != null)
+            if (nextCell != null && !isVisited(nextCell.r, nextCell.c))
             {
-                if (!visited[nextCell.r][columnValue(nextCell.r, nextCell.c)])
-                {
-                    currentCell.wall[visitingDirection].present = false;
-                    nextCell.wall[Maze.oppoDir[visitingDirection]].present =
-                            false;
+                currentCell.wall[visitingDirection].present = false;
+                nextCell.wall[Maze.oppoDir[visitingDirection]].present = false;
 
-                    recursiveBackTracker(nextCell, false);
-                }
+                recursiveBackTracker(nextCell);
             }
+
 
         }
 
     }
 
+    /**
+     * Generates a list of possible move directions based on the type of maze.
+     *
+     * @return : ArrayList of possible move directions.
+     */
     private ArrayList<Integer> getDirections()
     {
-        ArrayList<Integer> directions = new ArrayList<>();
+        ArrayList<Integer> directions;
 
-        directions.add(Maze.EAST);
-        directions.add(Maze.WEST);
         if (type == Maze.HEX)
         {
-            directions.addAll(Arrays
-                    .asList(Maze.NORTHEAST, Maze.NORTHWEST, Maze.SOUTHEAST,
-                            Maze.SOUTHWEST));
+            directions = new ArrayList<>(
+                    Arrays.asList(Maze.EAST, Maze.NORTHEAST, Maze.NORTHWEST,
+                            Maze.WEST, Maze.SOUTHWEST, Maze.SOUTHEAST));
         }
         else
         {
-            directions.addAll(Arrays.asList(Maze.NORTH, Maze.SOUTH));
+            directions = new ArrayList<>(
+                    Arrays.asList(Maze.EAST, Maze.NORTH, Maze.WEST,
+                            Maze.SOUTH));
         }
 
         return directions;
     }
 
+    /**
+     * Map cell position to a 2D array based on the type of maze.
+     *
+     * @param row: Row position of the cell
+     * @param column: Column position of the cell
+     * @return : Column position on the 2D array.
+     */
     private int columnValue(int row, int column)
     {
         if (type == Maze.HEX)
             column -= ((row + 1) / 2);
         return column;
+    }
+
+    /**
+     * Set the visited status of a cell.
+     *
+     * @param row: Row position of the cell
+     * @param column: Column position of the cell
+     */
+    private void setVisited(int row, int column)
+    {
+        visited[row][columnValue(row, column)] = true;
+    }
+
+    /**
+     * Get the visited status of a cell
+     *
+     * @param row: Row position of the cell
+     * @param column: Column position of the cell
+     * @return : Visited status of Cell
+     */
+    private boolean isVisited(int row, int column)
+    {
+        return visited[row][columnValue(row, column)];
     }
 
 } // end of class RecursiveBacktrackerGenerator
