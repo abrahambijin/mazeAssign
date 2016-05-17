@@ -57,8 +57,6 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
 
                 recursiveBackTracker(nextCell);
             }
-
-
         }
 
     }
@@ -91,7 +89,7 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
     /**
      * Map cell position to a 2D array based on the type of maze.
      *
-     * @param row: Row position of the cell
+     * @param row:    Row position of the cell
      * @param column: Column position of the cell
      * @return : Column position on the 2D array.
      */
@@ -105,7 +103,7 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
     /**
      * Set the visited status of a cell.
      *
-     * @param row: Row position of the cell
+     * @param row:    Row position of the cell
      * @param column: Column position of the cell
      */
     private void setVisited(int row, int column)
@@ -116,7 +114,7 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
     /**
      * Get the visited status of a cell
      *
-     * @param row: Row position of the cell
+     * @param row:    Row position of the cell
      * @param column: Column position of the cell
      * @return : Visited status of Cell
      */
