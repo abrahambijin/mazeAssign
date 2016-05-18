@@ -16,8 +16,6 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
     @Override
     public void generateMaze(Maze maze)
     {
-        // TODO Auto-generated method stub
-
         visited = new boolean[maze.sizeR][maze.sizeC];
         type = maze.type;
 

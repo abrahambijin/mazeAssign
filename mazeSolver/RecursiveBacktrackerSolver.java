@@ -40,7 +40,7 @@ public class RecursiveBacktrackerSolver implements MazeSolver
     public int cellsExplored()
     {
         // TODO Auto-generated method stub
-        return 0;
+        return cellsExplored;
     } // end of cellsExplored()
 
     /**
@@ -53,14 +53,14 @@ public class RecursiveBacktrackerSolver implements MazeSolver
         setVisited(currentCell.r, currentCell.c);
         cellsExplored++;
         maze.drawFtPrt(currentCell);
-        try
-        {
-            Thread.sleep(100);
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            Thread.sleep(70);
+//        }
+//        catch (InterruptedException e)
+//        {
+//            e.printStackTrace();
+//        }
         if (currentCell == maze.exit)
         {
             this.solved = true;
