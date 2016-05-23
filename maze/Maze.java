@@ -82,10 +82,17 @@ public abstract class Maze {
 	 * Function to draw the maze in a window.
 	 */
 	public abstract void draw();
+
 	/**
 	 * Draw a foot print at cell's position, for testing solution
 	 * @param cell Cell to be drawn.
 	 */
 	public abstract void drawFtPrt(Cell cell);
 
-} // end of class Maze
+
+        /**
+         * Show validation result of whether the maze is solved
+         */
+        public abstract boolean validate();
+
+}
