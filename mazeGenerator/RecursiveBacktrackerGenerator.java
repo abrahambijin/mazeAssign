@@ -30,11 +30,11 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
      */
     private void recursiveBackTracker(Cell currentCell)
     {
-        setVisited(currentCell.r, currentCell.c);
+        setVisited(currentCell);
         if (type == Maze.TUNNEL)
         {
             Cell nextCell = currentCell.tunnelTo;
-            if (nextCell != null && !isVisited(nextCell.r, nextCell.c))
+            if (nextCell != null && !isVisited(nextCell))
                 recursiveBackTracker(nextCell);
         }
 
@@ -48,7 +48,7 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
 
             Cell nextCell = currentCell.neigh[visitingDirection];
 
-            if (nextCell != null && !isVisited(nextCell.r, nextCell.c))
+            if (nextCell != null && !isVisited(nextCell))
             {
                 currentCell.wall[visitingDirection].present = false;
                 nextCell.wall[Maze.oppoDir[visitingDirection]].present = false;
@@ -56,7 +56,6 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
                 recursiveBackTracker(nextCell);
             }
         }
-
     }
 
     /**
@@ -101,24 +100,22 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
     /**
      * Set the visited status of a cell.
      *
-     * @param row:    Row position of the cell
-     * @param column: Column position of the cell
+     * @param cell: Cell to set the visited status
      */
-    private void setVisited(int row, int column)
+    private void setVisited(Cell cell)
     {
-        visited[row][columnValue(row, column)] = true;
+        visited[cell.r][columnValue(cell.r, cell.c)] = true;
     }
 
     /**
      * Get the visited status of a cell
      *
-     * @param row:    Row position of the cell
-     * @param column: Column position of the cell
+     * @param cell: Cell to check the visited status
      * @return : Visited status of Cell
      */
-    private boolean isVisited(int row, int column)
+    private boolean isVisited(Cell cell)
     {
-        return visited[row][columnValue(row, column)];
+        return visited[cell.r][columnValue(cell.r, cell.c)];
     }
 
 } // end of class RecursiveBacktrackerGenerator
