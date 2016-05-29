@@ -72,8 +72,8 @@ public class KruskalGenerator implements MazeGenerator
      * 1. For each pair of adjacent cells, create an edge and store them in
      *      an edge set.
      * 2. Generate a set of trees that contains cells. Initially, there will
-     *      be a tree for each cell unless it is a tunnel maze, in which case, the
-     *      two ends of the tunnel will belong to the same tree.
+     *      be a tree for each cell unless it is a tunnel maze, in which
+     *      case, the two ends of the tunnel will belong to the same tree.
      *
      * @param maze The reference of Maze object to generate.
      */
@@ -208,7 +208,7 @@ public class KruskalGenerator implements MazeGenerator
     }
 
     /**
-     * Funtion to check if two cells are equal.
+     * Function to check if two cells are equal.
      *
      * @param cell1: First Cell
      * @param cell2: Second Cell
