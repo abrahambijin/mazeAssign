@@ -53,24 +53,18 @@ public class RecursiveBacktrackerSolver implements MazeSolver
         setVisited(currentCell.r, currentCell.c);
         cellsExplored++;
         maze.drawFtPrt(currentCell);
-//        try
-//        {
-//            Thread.sleep(70);
-//        }
-//        catch (InterruptedException e)
-//        {
-//            e.printStackTrace();
-//        }
+//                try
+//                {
+//                    Thread.sleep(70);
+//                }
+//                catch (InterruptedException e)
+//                {
+//                    e.printStackTrace();
+//                }
         if (currentCell == maze.exit)
         {
             this.solved = true;
             return;
-        }
-        if (maze.type == Maze.TUNNEL)
-        {
-            Cell nextCell = currentCell.tunnelTo;
-            if (nextCell != null && !isVisited(nextCell.r, nextCell.c))
-                recursiveBackTracker(nextCell);
         }
 
         ArrayList<Integer> directions = getDirections();
@@ -81,7 +75,13 @@ public class RecursiveBacktrackerSolver implements MazeSolver
             int visitingDirection = directions.get(index);
             directions.remove(index);
 
-            if (!currentCell.wall[visitingDirection].present)
+            if (visitingDirection < 0)
+            {
+                Cell nextCell = currentCell.tunnelTo;
+                if (nextCell != null && !isVisited(nextCell.r, nextCell.c))
+                    recursiveBackTracker(nextCell);
+            }
+            else if (!currentCell.wall[visitingDirection].present)
             {
                 Cell nextCell = currentCell.neigh[visitingDirection];
 
@@ -113,6 +113,9 @@ public class RecursiveBacktrackerSolver implements MazeSolver
             directions = new ArrayList<>(
                     Arrays.asList(Maze.EAST, Maze.NORTH, Maze.WEST,
                             Maze.SOUTH));
+
+            if (maze.type == Maze.TUNNEL)
+                directions.add(-1);
         }
 
         return directions;
