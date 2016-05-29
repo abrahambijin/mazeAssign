@@ -23,6 +23,10 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 		modifiedPrims(maze.entrance);
 	} // end of generateMaze()
 
+	/**
+	 *
+	 * @param currentCell
+     */
 	private void modifiedPrims(Cell currentCell){
 
 		ArrayList<Cell> visitedCells = new ArrayList<>();
@@ -30,20 +34,22 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 		// marking entry point as visited
 		visitedCells.add(currentCell);
 
-		while(currentCell != null) {
-			// continue as long as visited cells have frontiers
+		do {
 			HashMap<Integer, Cell> frontiers;
 			frontiers = findFrontiers(currentCell);
+			if(frontiers != null) {
+				int randomDirection = getRandomDirectionFromPossibleDirections(frontiers);
+				Cell nextCell = frontiers.get(randomDirection);
+				destructWall(currentCell, randomDirection, nextCell);
 
-			int randomDirection = getRandomDirectionFromPossibleDirections(frontiers);
-			Cell nextCell = frontiers.get(randomDirection);
-			constructWall(currentCell, randomDirection, nextCell);
+				setVisited(nextCell.r, nextCell.c);
+				visitedCells.add(nextCell);
 
-			setVisited(nextCell.r, nextCell.c);
-			visitedCells.add(nextCell);
+				currentCell = findCellWithFrontiers(visitedCells);
+			}
+		} while(currentCell != null); // the currentCell will only be null only if all the cells have been visited and added to
+		// the visitedCells list
 
-			currentCell = findCellWithFrontiers(visitedCells);
-		}
 
 	}
 
@@ -52,7 +58,13 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 		return keys.get(new Random().nextInt(keys.size()));
 	}
 
-	private void constructWall(Cell currentCell, int randomKey, Cell nextCell) {
+	/**
+	 * Destructing a wall to carve a path for the maze generation
+	 * @param currentCell
+	 * @param randomKey
+	 * @param nextCell
+     */
+	private void destructWall(Cell currentCell, int randomKey, Cell nextCell) {
 		currentCell.wall[randomKey].present = false;
 		nextCell.wall[Maze.oppoDir[randomKey]].present = false;
 	}
@@ -69,10 +81,14 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 		visited[row][columnValue(row, column)] = true;
 	}
 
+	/**
+	 * select only the neighbouring cells which are not already present in the maze
+	 iterate over the possible directions and find the neighbours
+	 eliminate the cells which are already been visited and added to the collection
+	 * @param currentCell
+	 * @return Map of Cells with directions as the key
+     */
 	private HashMap<Integer, Cell> findFrontiers(Cell currentCell) {
-		//  select only the neighbouring cells which are not already present in the maze
-		// iterate over the possible directions and find the neighbours
-		// eliminate the cells which are already been visited and added to the collection
 
 		HashMap<Integer, Cell> frontiers = new HashMap<>();
 
@@ -81,16 +97,22 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 
 			if (cell != null && !isVisited(cell.r, cell.c)) frontiers.put(index, cell);
 		}
-		return frontiers;
+
+		return frontiers.isEmpty() ? null : frontiers;
 	}
 
+	/**
+	 * randomize the collection of visited cells and the loop through the collection of visited cells
+	 * and exit the loop as soon as we find a
+	 * visited cell with frontiers
+	 * @param visitedCells
+	 * @return	Cell: cell with frontiers
+     */
 	private Cell findCellWithFrontiers(ArrayList<Cell> visitedCells){
 
 		Collections.shuffle(visitedCells);
-		// randomize the collection of visited cells
 
 		for (Cell currentCell : visitedCells) {
-			// the loop will exit as soon as we find a visited cell with frontiers
 			for (int index : getDirections()) {
 				Cell cell = currentCell.neigh[index];
 
@@ -101,7 +123,10 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 		}
 		return null;
 	}
-
+	/**
+	 * Finding the directions
+	 * @return List containing all possible direction
+	 */
 	private ArrayList<Integer> getDirections()
 	{
 		ArrayList<Integer> directions;
@@ -118,7 +143,7 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 					Arrays.asList(Maze.EAST, Maze.NORTH, Maze.WEST,
 							Maze.SOUTH));
 		}
-
+		Collections.shuffle(directions);
 		return directions;
 	}
 
