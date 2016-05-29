@@ -7,12 +7,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * Generate Maze using Recursive Backtracking Algorithm
+ */
 public class RecursiveBacktrackerGenerator implements MazeGenerator
 {
 
     private boolean visited[][];
     private int type;
 
+    /**
+     * Function to call the recursive function with the initial cell
+     *
+     * @param maze The reference of Maze object to generate.
+     */
     @Override
     public void generateMaze(Maze maze)
     {
@@ -24,7 +32,18 @@ public class RecursiveBacktrackerGenerator implements MazeGenerator
     } // end of generateMaze()
 
     /**
-     * Function recursively generates a maze using the DFS approach
+     * Algorithm: RBTG(cell)
+     * ************************************************************************
+     * 1. Set cell to visited.
+     * 2. If maze is of type Tunnel and cell has a tunnel and the other end
+     * of the tunnel is not visited
+     *      2.1. RBTG(cell at other end of the tunnel)
+     * 3. Pick a random unvisited neighbouring cell.
+     * 4. Carve a path (i.e, remove the wall) to the neighbouring cells.
+     * 5. RBTG(neighbouring cell)
+     * 6. Repeat from stem 3 until no more unvisited neighbouring cells
+     *
+     * ************************************************************************
      *
      * @param currentCell: The cell that is to be processed.
      */

@@ -1,16 +1,34 @@
 package mazeGenerator;
 
 import maze.*;
+
 import java.util.*;
 
+/**
+ * Generate Maze using Kruskals Algorithm
+ */
 public class KruskalGenerator implements MazeGenerator
 {
     private HashSet<Edge> edgeSet;
     private HashSet<TreeSet<Cell>> treeSet;
     private int type;
-    private boolean [][] marked;
+    private boolean[][] marked;
 
 
+    /**
+     * Maze generation algorithm:
+     * ************************************************************************
+     * 1. Initialise a set of edges and a set of Trees of Cells
+     * 2. Randomly select an edge and remove it from the set.
+     * 3. If the selected edge joins two disjoint trees:
+     *      3.1. Join them and carve a path between the corresponding cells
+     * 4. else
+     *      4.1. Discard the edge
+     * 5. Repeat from step 2 until the set of edges is empty.
+     * ************************************************************************
+     *
+     * @param maze The reference of Maze object to generate.
+     */
     @Override
     public void generateMaze(Maze maze)
     {
@@ -48,6 +66,17 @@ public class KruskalGenerator implements MazeGenerator
         }
     } // end of generateMaze()
 
+    /**
+     * Initialisation:
+     *
+     * 1. For each pair of adjacent cells, create an edge and store them in
+     *      an edge set.
+     * 2. Generate a set of trees that contains cells. Initially, there will
+     *      be a tree for each cell unless it is a tunnel maze, in which case, the
+     *      two ends of the tunnel will belong to the same tree.
+     *
+     * @param maze The reference of Maze object to generate.
+     */
     private void initialize(Maze maze)
     {
         edgeSet = new HashSet<>();
@@ -70,7 +99,7 @@ public class KruskalGenerator implements MazeGenerator
                     if (cell2 != null && !isMarked(cell2))
                     {
                         Edge edge = new Edge(cell1, cell2, direction);
-                            edgeSet.add(edge);
+                        edgeSet.add(edge);
                     }
                 }
 
@@ -97,6 +126,11 @@ public class KruskalGenerator implements MazeGenerator
         }
     }
 
+    /**
+     * Selects a random edge from the edge set and removes it from the set
+     * before returning it
+     * @return edge: The random edge that was selected.
+     */
     private Edge randomEdge()
     {
         int index = new Random().nextInt(edgeSet.size());
@@ -110,6 +144,10 @@ public class KruskalGenerator implements MazeGenerator
         return edge;
     }
 
+    /**
+     * Class to model the Edge that is crated between two cells. Holds the
+     * two cells and the direction of the second cell with respect to the first.
+     */
     private class Edge
     {
         Cell cell1;
@@ -123,6 +161,12 @@ public class KruskalGenerator implements MazeGenerator
             this.direction = direction;
         }
 
+        /**
+         * Funtion to compare the equality of two edges.
+         *
+         * @param edge: THe edge to compare the current edge with.
+         * @return boolean: True if they are equal else false.
+         */
         private boolean equals(Edge edge)
         {
             boolean pass1 =
@@ -146,23 +190,33 @@ public class KruskalGenerator implements MazeGenerator
 
     }
 
+    /**
+     * Class that acts as a comparator for the tree set to compare two cells
+     */
     private class cellCompare implements Comparator<Cell>
     {
         @Override
         public int compare(Cell cell1, Cell cell2)
         {
-            if (KruskalGenerator.this.equals(cell1,cell2))
+            if (KruskalGenerator.this.equals(cell1, cell2))
                 return 0;
             else if (cell1.r == cell2.r)
-                return cell1.c < cell2.c? 1:-1;
+                return cell1.c < cell2.c ? 1 : -1;
             else
-                return cell1.r < cell2.r? 1:-1;
+                return cell1.r < cell2.r ? 1 : -1;
         }
     }
 
-    private boolean equals(Cell c1, Cell c2)
+    /**
+     * Funtion to check if two cells are equal.
+     *
+     * @param cell1: First Cell
+     * @param cell2: Second Cell
+     * @return boolean True if they are the same else False
+     */
+    private boolean equals(Cell cell1, Cell cell2)
     {
-        return ((c1.r == c2.r) && (c1.c == c2.c));
+        return ((cell1.r == cell2.r) && (cell1.c == cell2.c));
     }
 
     /**

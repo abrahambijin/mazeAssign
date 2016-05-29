@@ -18,6 +18,11 @@ public class RecursiveBacktrackerSolver implements MazeSolver
     private boolean solved = false;
     private int cellsExplored;
 
+    /**
+     * Function to call the recursive solver by passing the entrance cell
+     *
+     * @param maze The maze to solve.
+     */
     @Override
     public void solveMaze(Maze maze)
     {
@@ -39,13 +44,22 @@ public class RecursiveBacktrackerSolver implements MazeSolver
     @Override
     public int cellsExplored()
     {
-        // TODO Auto-generated method stub
         return cellsExplored;
     } // end of cellsExplored()
 
     /**
-     * Function recursively generates a maze using the DFS approach
+     * Algorithm: RBTS(cell)
+     * ************************************************************************
+     * 1. Set cell to visited.
+     * 2. If cell is the exit cell
+     *      2.1. STOP
+     * 3. Pick a random unvisited neighbouring cell towards which there is no
+     * wall or the tunneled cell if maze is of type TUNNEL and cell has a
+     * tunnel to an unvisited cell.
+     * 5. RBTS(selected cell)
+     * 6. Repeat from stem 3 until no more unvisited cells to go to.
      *
+     * ************************************************************************
      * @param currentCell: The cell that is to be processed.
      */
     private void recursiveBackTracker(Cell currentCell)
