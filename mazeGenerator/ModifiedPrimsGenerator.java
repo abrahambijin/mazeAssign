@@ -8,10 +8,33 @@ import java.util.*;
 // Frontier definition :  set of all cells that are not yet in the maze,
 // but are adjacent to a cell that is in the maze.
 
+
 public class ModifiedPrimsGenerator implements MazeGenerator {
 
 	private boolean visited [][];
 	private int type;
+
+	/**
+	 * Modified Prim's Algorithmn for generating the Maze
+	 *
+	 * ******************************************************************************************
+	 *
+	 * ALGORITHM Modified Prim's
+	 *
+	 *
+	 * 1. Start by adding the maze entrance to the collection of visited cells
+	 * 2. Mark the cell as visited
+	 * 3. Find all the frontiers with respect to the cell(Frontier definition provided above)
+	 * 4. Randomly select a frontier and carve a path
+	 * 5. Mark the frontier as visited
+	 * 6. Shuffle the collection of visited cell to randomize the collection
+	 * 7. Iterate over the collection(shuffled collection of visited cell) and
+	 * 	  find a cell which has frontiers
+	 * 8. Make this cell, the current cell and continue the loop
+	 * 9. The loop exits when there are no un-visited cell or all the cells in the maze have been
+	 *    added to the visited cells collection.
+	 * ******************************************************************************************
+	 * */
 
 	@Override
 	public void generateMaze(Maze maze) {
@@ -33,7 +56,7 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 
 	/**
 	 *
-	 * @param currentCell
+	 * @param currentCell: The entrance cell of the maze
      */
 	private void modifiedPrims(Cell currentCell){
 
@@ -57,8 +80,6 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 			}
 		} while(currentCell != null); // the currentCell will only be null only if all the cells have been visited and added to
 		// the visitedCells list
-
-
 	}
 
 	private int getRandomDirectionFromPossibleDirections(HashMap<Integer, Cell> frontiers) {
@@ -92,7 +113,7 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 	/**
 	 * select only the neighbouring cells which are not already present in the maze
 	 iterate over the possible directions and find the neighbours
-	 eliminate the cells which are already been visited and added to the collection
+	 eliminate the cells which are already been visited and add to the collection
 	 * @param currentCell
 	 * @return Map of Cells with directions as the key
      */

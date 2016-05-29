@@ -16,6 +16,16 @@ public class BiDirectionalBFSSolver implements MazeSolver
     private int cellsExplored;
     private boolean solved = false;
 
+	/**
+	 *	1. Declare two queue's for entrance and exit
+     *  2. Add maze entrance to the entrance queue and maze exit cell to the exit queue
+     *  3. remove the cells(from entrance and exit queue ) and mark them as visited
+     *  4. Find the unvisited cells(possible move options where wall does not exists) wrt to the cells
+     *     removed from the queue and add them to the respective queues
+     *  5. Repeat step 3 until maze is solved
+     *  6. Combine these paths to get the final path solution.
+	 */
+
     @Override
     public void solveMaze(Maze maze)
     {
