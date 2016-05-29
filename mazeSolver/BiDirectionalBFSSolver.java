@@ -38,8 +38,8 @@ public class BiDirectionalBFSSolver implements MazeSolver
     private void bfsSolver(Maze maze)
     {
 
-        Queue<Cell> entranceQueue = new LinkedList<Cell>();
-        Queue<Cell> exitQueue = new LinkedList<Cell>();
+        Queue<Cell> entranceQueue = new LinkedList<>();
+        Queue<Cell> exitQueue = new LinkedList<>();
 
         entranceQueue.add(maze.entrance);
         exitQueue.add(maze.exit);

@@ -44,10 +44,8 @@ public class KruskalGenerator implements MazeGenerator
 
                 edge.cell1.wall[edge.direction].present = false;
                 edge.cell2.wall[Maze.oppoDir[edge.direction]].present = false;
-
             }
         }
-
     } // end of generateMaze()
 
     private void initialize(Maze maze)
@@ -82,7 +80,9 @@ public class KruskalGenerator implements MazeGenerator
                     for (TreeSet<Cell> cells : treeSet)
                         if (cells.contains(cell1.tunnelTo))
                         {
-                            cells.add(cell1.tunnelTo);
+                            treeSet.remove(cells);
+                            cells.add(cell1);
+                            treeSet.add(cells);
                             flag = true;
                             break;
                         }
@@ -95,10 +95,6 @@ public class KruskalGenerator implements MazeGenerator
                 }
             }
         }
-
-        System.out.println("Edges: " + edgeSet.size());
-        System.out.println("Tree Set: " + treeSet.size());
-
     }
 
     private Edge randomEdge()
@@ -152,11 +148,10 @@ public class KruskalGenerator implements MazeGenerator
 
     private class cellCompare implements Comparator<Cell>
     {
-
         @Override
         public int compare(Cell cell1, Cell cell2)
         {
-            if (cell1.r == cell2.r && cell1.c == cell2.c)
+            if (KruskalGenerator.this.equals(cell1,cell2))
                 return 0;
             else if (cell1.r == cell2.r)
                 return cell1.c < cell2.c? 1:-1;
@@ -168,17 +163,6 @@ public class KruskalGenerator implements MazeGenerator
     private boolean equals(Cell c1, Cell c2)
     {
         return ((c1.r == c2.r) && (c1.c == c2.c));
-    }
-
-    /**
-     * Map cell position to a 2D array based on the type of maze.
-     *
-     * @param row: Row position of the cell
-     * @return : Column position on the 2D array.
-     */
-    private int hexMapping(int row)
-    {
-        return (type == Maze.HEX) ? (row + 1) / 2 : 0;
     }
 
     /**
@@ -209,15 +193,12 @@ public class KruskalGenerator implements MazeGenerator
     /**
      * Map cell position to a 2D array based on the type of maze.
      *
-     * @param row:    Row position of the cell
-     * @param column: Column position of the cell
+     * @param row: Row position of the cell
      * @return : Column position on the 2D array.
      */
-    private int columnValue(int row, int column)
+    private int hexMapping(int row)
     {
-        if (type == Maze.HEX)
-            column -= ((row + 1) / 2);
-        return column;
+        return (type == Maze.HEX) ? (row + 1) / 2 : 0;
     }
 
     /**
@@ -227,7 +208,7 @@ public class KruskalGenerator implements MazeGenerator
      */
     private void mark(Cell cell)
     {
-        marked[cell.r][columnValue(cell.r, cell.c)] = true;
+        marked[cell.r][cell.c - hexMapping(cell.r)] = true;
     }
 
     /**
@@ -238,8 +219,6 @@ public class KruskalGenerator implements MazeGenerator
      */
     private boolean isMarked(Cell cell)
     {
-        return marked[cell.r][columnValue(cell.r, cell.c)];
+        return marked[cell.r][cell.c - hexMapping(cell.r)];
     }
-
-
 } // end of class KruskalGenerator
