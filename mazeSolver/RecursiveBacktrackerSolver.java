@@ -68,6 +68,8 @@ public class RecursiveBacktrackerSolver implements MazeSolver
         }
 
         ArrayList<Integer> directions = getDirections();
+        if (maze.type == Maze.TUNNEL)
+            directions.add(-1);
 
         while (!solved && !directions.isEmpty())
         {
@@ -113,9 +115,6 @@ public class RecursiveBacktrackerSolver implements MazeSolver
             directions = new ArrayList<>(
                     Arrays.asList(Maze.EAST, Maze.NORTH, Maze.WEST,
                             Maze.SOUTH));
-
-            if (maze.type == Maze.TUNNEL)
-                directions.add(-1);
         }
 
         return directions;

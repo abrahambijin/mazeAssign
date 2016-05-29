@@ -20,7 +20,15 @@ public class ModifiedPrimsGenerator implements MazeGenerator {
 		visited = new boolean [maze.sizeR][maze.sizeC];
 		type = maze.type;
 
-		modifiedPrims(maze.entrance);
+        if(type != Maze.TUNNEL)
+		    modifiedPrims(maze.entrance);
+
+        else
+        {
+            System.err.println(
+                    "This algorithm can not generate a tunneled " + "maze!!");
+            System.exit(0);
+        }
 	} // end of generateMaze()
 
 	/**
